@@ -1,0 +1,1371 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IELTS 工作台 · 雅思备考</title>
+<meta name="description" content="雅思备考工作台：10 周计划、模考记录、词汇、写作与口语题库，进度可导出导入。">
+<link rel="preconnect" href="https://miaoda.feishu.cn" crossorigin>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<style>
+:root{
+  --paper:#F5F1E8;
+  --sheet:#FFFDF7;
+  --ink:#191813;
+  --ink-70:#4B463C;
+  --ink-45:#6B6558;
+  --line:#D8CFBC;
+  --line-soft:#E7DFCE;
+  --red:#B03A2B;
+  --red-soft:#F2E3DE;
+  --teal:#2C5A5C;
+  --teal-soft:#E3EBE6;
+  --ochre:#9A6F22;
+  --font-display:"Noto Serif SC","Songti SC","Noto Serif","Georgia",serif;
+  --font-body:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  --rail:250px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--font-body);font-weight:400;font-size:15px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--red);color:var(--sheet)}
+a{color:var(--ink);text-decoration:none}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px;border-radius:1px}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--paper)}
+::-webkit-scrollbar-thumb{background:#C9C0AC;border:3px solid var(--paper);border-radius:6px}
+::-webkit-scrollbar-thumb:hover{background:var(--ink-45)}
+
+/* ---------- 框架 ---------- */
+.rail{
+  position:fixed;inset:0 auto 0 0;width:var(--rail);
+  padding:30px 26px 22px;border-right:1px solid var(--line);
+  display:flex;flex-direction:column;gap:26px;background:var(--paper);z-index:2;
+}
+.brand{display:flex;align-items:baseline;gap:10px}
+.brand-mark{
+  width:30px;height:30px;border:1px solid var(--ink);display:grid;place-items:center;
+  font-family:var(--font-display);font-weight:700;font-size:17px;line-height:1;
+  transform:translateY(4px);
+}
+.brand-t{font-family:var(--font-display);font-weight:600;font-size:19px;letter-spacing:.06em}
+.brand-x{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-45);display:block;margin-top:2px}
+.nav{display:flex;flex-direction:column;gap:1px;margin-top:6px}
+.nav a{
+  display:flex;align-items:center;gap:10px;padding:9px 0;font-size:14.5px;color:var(--ink-70);
+  border-bottom:1px solid transparent;transition:color .18s ease,transform .18s ease;
+}
+.nav a::before{content:"";width:5px;height:5px;background:transparent;transition:background .18s}
+.nav a:hover{color:var(--ink);transform:translateX(2px)}
+.nav a.on{color:var(--ink);font-weight:500}
+.nav a.on::before{background:var(--red)}
+.nav a .nv{margin-left:auto;font-size:11.5px;color:var(--ink-45);font-variant-numeric:tabular-nums}
+.rail-foot{margin-top:auto;border-top:1px solid var(--line);padding-top:16px;font-size:12.5px;color:var(--ink-45);line-height:1.9}
+.rail-foot b{font-family:var(--font-display);font-size:26px;color:var(--ink);font-variant-numeric:tabular-nums;margin:0 3px}
+.rail-foot .rf-row{display:flex;justify-content:space-between}
+
+.main{margin-left:var(--rail);padding:44px 52px 90px;max-width:1180px}
+.view{animation:rise .5s cubic-bezier(.16,1,.3,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ---------- 标题与文本 ---------- */
+h1{
+  font-family:var(--font-display);font-weight:600;font-size:clamp(26px,3.4vw,40px);
+  line-height:1.25;letter-spacing:-.01em;margin:0 0 10px;text-wrap:balance;
+}
+h2{font-family:var(--font-display);font-weight:600;font-size:21px;margin:0 0 4px;letter-spacing:0}
+h3{font-weight:500;font-size:15px;margin:0 0 8px}
+.lede{color:var(--ink-70);max-width:68ch;margin:0 0 30px;text-wrap:pretty}
+.muted{color:var(--ink-45)}
+.small{font-size:12.5px;letter-spacing:.02em}
+.num{font-variant-numeric:tabular-nums}
+h1 .thin{font-weight:400;color:var(--ink-45)}
+
+/* ---------- 分区 ---------- */
+.block{border-top:1px solid var(--line);padding:26px 0 30px}
+.block>.hd{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:14px}
+.block>.hd h2{margin:0}
+.block>.hd .sub{font-size:12.5px;color:var(--ink-45)}
+.grid-2{display:grid;grid-template-columns:minmax(0,1fr) 306px;gap:52px;align-items:start}
+@media (max-width:1080px){.grid-2{grid-template-columns:minmax(0,1fr);gap:34px}}
+
+/* ---------- 数据行 ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:0 0 34px}
+.stat{padding:18px 14px 16px;border-left:1px solid var(--line-soft)}
+.stat:first-child{border-left:0;padding-left:0}
+.stat .k{font-size:11.5px;letter-spacing:.16em;color:var(--ink-45);text-transform:uppercase}
+.stat .v{font-family:var(--font-display);font-size:30px;line-height:1.2;font-variant-numeric:tabular-nums;margin-top:4px}
+.stat .v em{font-style:normal;font-size:13px;color:var(--ink-45);margin-left:3px;font-family:var(--font-body)}
+@media (max-width:640px){.stats{grid-template-columns:1fr 1fr}.stat:nth-child(3){border-left:0;padding-left:0}.stat{border-top:1px solid var(--line-soft)}.stat:nth-child(-n+2){border-top:0}}
+
+/* ---------- 任务行 ---------- */
+.tasks{display:flex;flex-direction:column}
+.taskrow{
+  display:grid;grid-template-columns:18px minmax(0,1fr) 52px;column-gap:14px;align-items:start;
+  padding:13px 0;border-bottom:1px solid var(--line-soft);cursor:pointer;
+  transition:background .15s ease;
+}
+.taskrow:hover{background:rgba(176,58,43,.035)}
+.taskrow input{
+  appearance:none;-webkit-appearance:none;width:16px;height:16px;margin:4px 0 0;border:1px solid var(--ink-45);
+  background:transparent;cursor:pointer;position:relative;flex:none;border-radius:1px;transition:border-color .15s,background .15s;
+}
+.taskrow input:checked{border-color:var(--ink);background:var(--ink)}
+.taskrow input:checked::after{
+  content:"";position:absolute;left:4px;top:1px;width:5px;height:9px;
+  border-right:2px solid var(--sheet);border-bottom:2px solid var(--sheet);transform:rotate(38deg);
+}
+.taskrow .t{font-size:15px;line-height:1.55}
+.taskrow .s{display:block;color:var(--ink-45);font-size:12.5px;line-height:1.6;margin-top:2px;padding-right:8px}
+.taskrow .m{font-size:12px;color:var(--ink-45);text-align:right;font-variant-numeric:tabular-nums;padding-top:2px}
+.taskrow.done .t{color:var(--ink-45);text-decoration:line-through;text-decoration-color:var(--line);text-decoration-thickness:1px}
+.taskrow.done .m{color:var(--line)}
+
+/* ---------- 周折叠 ---------- */
+.week{border-top:1px solid var(--line)}
+.week-hd{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;width:100%;
+  background:none;border:0;padding:16px 0;text-align:left;cursor:pointer}
+.week-hd .wn{font-family:var(--font-display);font-size:15px;color:var(--ink-45);font-variant-numeric:tabular-nums}
+.week-hd .wt{font-size:15px;font-weight:500}
+.week-hd .wp{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--ink-45)}
+.week-hd .bar{width:82px;height:2px;background:var(--line);position:relative;overflow:hidden}
+.week-hd .bar i{position:absolute;inset:0 auto 0 0;background:var(--teal);transition:width .3s ease}
+.week-hd .care{width:9px;height:9px;border-right:1.5px solid var(--ink-45);border-bottom:1.5px solid var(--ink-45);transform:rotate(45deg);transition:transform .2s;margin-left:2px}
+.week.open .week-hd .care{transform:rotate(-135deg)}
+.week-body{display:none;padding:0 0 20px 78px}
+.week.open .week-body{display:block}
+.week.cur .wn{color:var(--red);font-weight:600}
+@media (max-width:640px){.week-hd{grid-template-columns:40px 1fr auto}.week-body{padding-left:0}}
+
+/* ---------- 目标对比 ---------- */
+.cmp{margin:0 0 18px}
+.cmp .l{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px}
+.cmp .l b{font-variant-numeric:tabular-nums;font-weight:500}
+.cmp .l b i{font-style:normal;color:var(--ink-45);font-weight:400}
+.cmp .track{height:6px;background:var(--line-soft);position:relative}
+.cmp .fill{position:absolute;inset:0 auto 0 0;background:var(--teal);transition:width .4s ease}
+.cmp .goal{position:absolute;top:-3px;width:1px;height:12px;background:var(--red)}
+
+/* ---------- 图表 ---------- */
+.chartwrap{margin:6px 0 0}
+.chart{width:100%;height:auto;display:block}
+.chart text{font-family:var(--font-body);fill:var(--ink-45);font-size:11px}
+.chart .val{fill:var(--ink);font-size:11.5px;font-variant-numeric:tabular-nums}
+.chart .axis{stroke:var(--line);stroke-width:1}
+.chart .gl{stroke:var(--line-soft);stroke-width:1}
+.chart .line{stroke:var(--teal);stroke-width:2;fill:none}
+.chart .dot{fill:var(--red);r:3.4}
+.legend{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-45);margin:8px 0 0}
+.legend i{width:16px;height:0;border-top:1px dashed var(--red);display:inline-block}
+.empty{padding:26px 0;color:var(--ink-45);font-size:14px;border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);margin:6px 0 0}
+
+/* ---------- 表格 ---------- */
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.tbl th{text-align:left;font-weight:400;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-45);padding:0 10px 8px 0;border-bottom:1px solid var(--line)}
+.tbl td{padding:11px 10px 11px 0;border-bottom:1px solid var(--line-soft);vertical-align:top}
+.tbl td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl td.sc{font-family:var(--font-display);font-size:16px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl tr:hover td{background:rgba(176,58,43,.03)}
+.tbl .note{color:var(--ink-45);font-size:12.5px;line-height:1.55}
+.xbtn{background:none;border:0;color:var(--ink-45);cursor:pointer;font-size:12px;padding:2px 0;border-bottom:1px solid transparent}
+.xbtn:hover{color:var(--red);border-bottom-color:var(--red)}
+@media (max-width:640px){.tbl{font-size:12.5px}.tbl .hide-sm{display:none}}
+
+/* ---------- 表单 ---------- */
+.form{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));align-items:end}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-45)}
+.field input,.field select,.field textarea{
+  width:100%;background:var(--sheet);border:1px solid var(--line);border-radius:2px;
+  padding:9px 11px;line-height:1.4;font-size:14px;transition:border-color .15s;
+}
+.field input:hover,.field select:hover,.field textarea:hover{border-color:#C6BBA4}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--ink);outline:2px solid var(--red);outline-offset:1px}
+.field textarea{resize:vertical;min-height:64px}
+.field.wide{grid-column:1/-1}
+.field-row{grid-column:1/-1;display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+.field-row .field{flex:1 1 240px}
+.field-row .btn{flex:0 0 auto}
+.hint{font-size:12px;color:var(--ink-45);margin-top:2px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;border:1px solid var(--ink);background:transparent;
+  border-radius:2px;padding:9px 16px;font-size:13.5px;font-weight:500;cursor:pointer;
+  transition:background .18s ease,color .18s ease,transform .18s ease;
+}
+.btn:hover{background:var(--ink);color:var(--sheet)}
+.btn:active{transform:translateY(1px)}
+.btn.solid{background:var(--ink);color:var(--sheet)}
+.btn.solid:hover{background:var(--red);border-color:var(--red)}
+.btn.ghost{border-color:var(--line);color:var(--ink-70)}
+.btn.ghost:hover{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn.sm{padding:5px 10px;font-size:12px}
+.btn.danger{border-color:var(--red);color:var(--red)}
+.btn.danger:hover{background:var(--red);color:var(--sheet)}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+
+/* ---------- 词条 ---------- */
+.lexrow{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr) auto;gap:16px;align-items:start;
+  padding:14px 0;border-bottom:1px solid var(--line-soft)}
+.lexrow .term{font-family:var(--font-display);font-size:17px;letter-spacing:.01em}
+.lexrow .def{font-size:13.5px;color:var(--ink-70)}
+.lexrow .ex{display:block;color:var(--ink-45);font-size:12.5px;margin-top:3px;line-height:1.6}
+.lexrow .lv{display:flex;gap:4px;align-items:center;padding-top:4px}
+.dots{display:flex;gap:3px}
+.dot5{width:6px;height:6px;background:var(--line);border-radius:50%}
+.dot5.on{background:var(--teal)}
+.lexrow.got .term{color:var(--ink-45)}
+@media (max-width:700px){.lexrow{grid-template-columns:1fr}.lexrow .lv{justify-content:flex-start}}
+
+/* ---------- 筛选 ---------- */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:2px;overflow:hidden;background:var(--sheet)}
+.seg button{background:none;border:0;padding:7px 14px;font-size:12.5px;color:var(--ink-70);cursor:pointer;border-left:1px solid var(--line);transition:background .15s,color .15s}
+.seg button:first-child{border-left:0}
+.seg button.on{background:var(--ink);color:var(--sheet)}
+.seg button:not(.on):hover{background:var(--red-soft);color:var(--ink)}
+
+/* ---------- 计时 ---------- */
+.timer{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0;margin:0 0 8px;display:flex;align-items:center;gap:26px;flex-wrap:wrap}
+.clock{font-family:var(--font-display);font-size:44px;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:.01em;min-width:150px}
+.clock.run{color:var(--red)}
+.timer .meta{font-size:12.5px;color:var(--ink-45);line-height:1.8}
+.timer .grow{flex:1 1 180px}
+
+/* ---------- 题目 ---------- */
+.promptlist{display:flex;flex-direction:column}
+.prompt{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:12px;align-items:start;
+  padding:14px 0;border-bottom:1px solid var(--line-soft)}
+.prompt .no{font-size:11.5px;color:var(--ink-45);font-variant-numeric:tabular-nums;padding-top:3px}
+.prompt .q{font-size:14px;line-height:1.65}
+.prompt .meta{font-size:12px;color:var(--ink-45);margin-top:3px}
+.prompt .go{align-self:center}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.chip{font-size:11.5px;padding:3px 8px;border:1px solid var(--line);border-radius:2px;color:var(--ink-70);background:var(--sheet);cursor:pointer;transition:all .15s}
+.chip:hover{border-color:var(--ink)}
+.chip.on{background:var(--ink);color:var(--sheet);border-color:var(--ink)}
+
+/* ---------- 数据页 ---------- */
+.panel{border:1px solid var(--line);background:var(--sheet);padding:22px 24px;border-radius:2px;margin-bottom:26px}
+.panel h3{font-family:var(--font-display);font-size:17px;font-weight:600;margin:0 0 6px}
+.panel .p-lede{font-size:13px;color:var(--ink-45);margin:0 0 16px;max-width:64ch}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:14px 22px;margin:0 0 4px}
+.kv div .k{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-45)}
+.kv div .v{font-family:var(--font-display);font-size:22px;font-variant-numeric:tabular-nums}
+.drop{display:block;border:1px dashed var(--line);border-radius:2px;padding:26px 22px;text-align:center;color:var(--ink-45);font-size:13px;cursor:pointer;transition:border-color .15s,background .15s}
+.drop:hover{border-color:var(--ink);background:rgba(176,58,43,.03)}
+.drop strong{display:block;color:var(--ink);font-size:14px;font-weight:500;margin-bottom:3px}
+.prev{border-top:1px solid var(--line);margin-top:16px;padding-top:14px;font-size:13px;display:none}
+.prev.show{display:block}
+.prev .row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dotted var(--line-soft)}
+.prev .row b{font-weight:500;font-variant-numeric:tabular-nums}
+
+/* ---------- 提示 ---------- */
+.toast{
+  position:fixed;left:calc(var(--rail) + 40px);bottom:26px;background:var(--ink);color:var(--sheet);
+  padding:11px 18px;border-radius:2px;font-size:13px;letter-spacing:.02em;opacity:0;transform:translateY(8px);
+  transition:opacity .25s ease,transform .25s ease;pointer-events:none;z-index:10;max-width:78vw;
+}
+.toast.on{opacity:1;transform:none}
+@media (max-width:900px){.toast{left:18px;right:18px;bottom:14px}}
+
+/* ---------- 备注 ---------- */
+.footnote{font-size:12px;color:var(--ink-45);border-top:1px solid var(--line-soft);padding-top:14px;margin-top:28px;line-height:1.8}
+
+/* ---------- 移动端 ---------- */
+@media (max-width:900px){
+  :root{--rail:0px}
+  .rail{position:static;width:100%;padding:18px 20px 12px;border-right:0;border-bottom:1px solid var(--line);gap:14px}
+  .nav{flex-direction:row;overflow-x:auto;gap:18px;margin-top:2px;padding-bottom:4px;padding-right:16px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .nav::-webkit-scrollbar{display:none}
+  .nav a{white-space:nowrap;padding:6px 0;border-bottom:1px solid transparent}
+  .nav a.on{border-bottom-color:var(--red)}
+  .nav a .nv{display:none}
+  .rail-foot{display:none}
+  .main{margin-left:0;padding:26px 20px 80px}
+  h1{font-size:28px}
+}
+@media print{.rail{display:none}.main{margin:0;padding:0}}
+</style>
+</head>
+<body>
+<aside class="rail">
+  <div class="brand">
+    <span class="brand-mark">雅</span>
+    <div>
+      <div class="brand-t">IELTS 工作台</div>
+      <span class="brand-x">Academic · 学术类</span>
+    </div>
+  </div>
+  <nav class="nav" id="nav" aria-label="主导航"></nav>
+  <div class="rail-foot" id="railFoot"></div>
+</aside>
+<main class="main"><div id="view" class="view"></div></main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(function(){
+  'use strict';
+
+  var KEY = 'ielts.bench.v3';
+  var mem = null, storageOK = true;
+  var $ = function(s){ return document.getElementById(s); };
+  var esc = function(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  };
+  var uid = function(){ return Math.random().toString(36).slice(2,8) + Date.now().toString(36).slice(-4); };
+  var pad = function(n){ return (n<10?'0':'') + n; };
+  var iso = function(d){ d = d || new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); };
+  var today = function(){ return iso(new Date()); };
+  var parseD = function(s){ var p = String(s||'').split('-'); return new Date(+p[0], (+p[1]||1)-1, +p[2]||1); };
+  var addDays = function(s, n){ var d = parseD(s); d.setDate(d.getDate()+n); return iso(d); };
+  var diffDays = function(a, b){ return Math.round((parseD(b) - parseD(a)) / 86400000); };
+  var WD = ['日','一','二','三','四','五','六'];
+  var cnDate = function(s){ var d = parseD(s); return d.getFullYear()+' 年 '+(d.getMonth()+1)+' 月 '+d.getDate()+' 日'; };
+  var shortD = function(s){ var p = String(s).split('-'); return p[1]+'.'+p[2]; };
+  var mmss = function(sec){
+    sec = Math.max(0, Math.floor(sec));
+    return pad(Math.floor(sec/60)) + ':' + pad(sec%60);
+  };
+
+  /* ============ 技能 ============ */
+  var SK = [
+    {k:'L', zh:'听力', en:'Listening'},
+    {k:'R', zh:'阅读', en:'Reading'},
+    {k:'W', zh:'写作', en:'Writing'},
+    {k:'S', zh:'口语', en:'Speaking'}
+  ];
+  var skName = function(k){ for(var i=0;i<SK.length;i++){ if(SK[i].k===k) return SK[i].zh; } return '全套'; };
+
+  /* ============ 10 周计划 ============ */
+  var PLAN = [
+    { n:1, theme:'建立基线', note:'先把真实水平量出来，别急着刷题。', tasks:[
+      {t:'完整模考 C19 Test 1', s:'听力 + 阅读连续做完，写作口语照常写一遍，只为拿到真实起点', m:170},
+      {t:'听力：数字、地名、姓名拼写', s:'30 题专项，错一个就把该场回听一遍', m:45},
+      {t:'阅读：T/F/NG 判断规则', s:'整理 NOT GIVEN 与 FALSE 的分界，做 20 题并写错因', m:60},
+      {t:'写作：Task 2 观点类 1 篇', s:'40 分钟限时，先不评分，只看能否在时间内写完', m:50},
+      {t:'口语：Part 1 高频 20 问', s:'每题 30 秒自答并录音，回听标记卡顿处', m:40}
+    ]},
+    { n:2, theme:'听力场景与阅读定位', note:'把题型和场景拆开练，比整套刷题有效。', tasks:[
+      {t:'听力：Section 1 表单填空 2 套', s:'精听错题所在句，逐句写下来再对照原文', m:60},
+      {t:'听力：Section 2 地图 + 多选', s:'各 1 套，地图题先标方位词再听', m:45},
+      {t:'阅读：Heading 匹配 2 篇', s:'为每段写一句 8 词主旨，再对照标题', m:70},
+      {t:'写作：Task 1 折线图 2 篇', s:'每篇 20 分钟，写完对照范文改概述句', m:60},
+      {t:'词汇：第一批 60 词入库', s:'学术高频词 + 3 组同义替换卡片', m:40}
+    ]},
+    { n:3, theme:'长难句与同义替换', note:'雅思阅读的失分，八成是同一句话换了说法。', tasks:[
+      {t:'阅读：长难句拆解 30 句', s:'主干 + 修饰分层标记，不查词典先猜', m:60},
+      {t:'听力：Section 3 学术讨论 2 套', s:'边听边记关键词，不看题干', m:60},
+      {t:'阅读：全篇计时 2 篇', s:'每篇 20 分钟，做完写时间分配问题', m:60},
+      {t:'写作：Task 2 双边讨论 1 篇', s:'40 分钟，自查连接词是否重复', m:55},
+      {t:'口语：Part 2 四张卡片', s:'1 分钟笔记 + 2 分钟陈述，全部录音', m:45}
+    ]},
+    { n:4, theme:'中期模考', note:'半程检验：看分数，也看每科的时间与错因。', tasks:[
+      {t:'模考：C18 Test 2 四科', s:'按考试顺序连着做，中间不休息', m:200},
+      {t:'听力：错题回炉', s:'错题句重听 3 遍不看原文，第 3 遍仍不懂才查', m:40},
+      {t:'阅读：错题三分类', s:'定位错 / 词不懂 / 时间不够，逐条写原因', m:50},
+      {t:'写作：模考 Task 2 重写', s:'同题重写一遍，只改论证和衔接', m:50},
+      {t:'口语：Part 3 追问 10 题', s:'每题按「观点 + 理由 + 例子」说满 45 秒', m:40}
+    ]},
+    { n:5, theme:'写作 Task 1 全覆盖', note:'四类图形各练一遍，概述句是拿分点。', tasks:[
+      {t:'Task 1：柱状图 + 饼图', s:'各 1 篇，20 分钟限时，概述句写在第二段', m:60},
+      {t:'Task 1：流程图 + 地图', s:'各 1 篇，积累方位与流程动词', m:60},
+      {t:'Task 1：概述句 20 句改写', s:'同一组数据换三种句式表达', m:35},
+      {t:'Task 2：问题解决类 1 篇', s:'40 分钟，写完检查是否真的回答了「怎么办」', m:50},
+      {t:'听力：Section 4 讲座填空 2 套', s:'注意同义替换与词性预判', m:50}
+    ]},
+    { n:6, theme:'阅读速度与题型组合', note:'速度靠题型顺序，不靠读得快。', tasks:[
+      {t:'阅读：匹配信息题 2 篇', s:'先扫题目关键词，再回文定位', m:60},
+      {t:'阅读：句子 + 摘要填空 2 篇', s:'留意字数限制与词形变化', m:55},
+      {t:'阅读：整套 3 篇 60 分钟', s:'记录每篇用时，超过 25 分钟立即转下一篇', m:70},
+      {t:'写作：Task 2 利弊类 1 篇', s:'40 分钟，论点各配一个具体例子', m:50},
+      {t:'口语：Part 2 高频 6 张', s:'串成一条自己的故事线，减少现编', m:45}
+    ]},
+    { n:7, theme:'冲刺前模考', note:'这次模考决定后三周练什么。', tasks:[
+      {t:'模考：C17 Test 4 四科', s:'严格按考试时间，写作口语也要完成', m:200},
+      {t:'听力：Section 4 精听 2 篇', s:'写关键词链，不看原文复述一遍', m:45},
+      {t:'阅读：错题复盘 + 生词入库', s:'整理 30 个高频生词与替换对', m:50},
+      {t:'写作：Task 1 + Task 2 连做', s:'60 分钟内完成两篇', m:65},
+      {t:'口语：全流程模拟', s:'11–14 分钟完整走一遍并自评四项', m:45}
+    ]},
+    { n:8, theme:'弱项专项', note:'只补最低分那一科，其余维持手感。', tasks:[
+      {t:'弱项专项 A', s:'按第 7 周模考最低分科目，做 3 组同类题', m:90},
+      {t:'弱项专项 B', s:'错题本重做 30 题，限时完成', m:50},
+      {t:'写作：旧作文改到目标分', s:'挑 3 篇改句法与词汇，不重写结构', m:60},
+      {t:'口语：Part 3 抽象话题 8 题', s:'练因果与对比表达，避免只下结论', m:40},
+      {t:'词汇：复习到期词 100 个', s:'已掌握的降到低频，别反复背', m:35}
+    ]},
+    { n:9, theme:'全真节奏', note:'练耐力：连续作战比单题正确率更接近考场。', tasks:[
+      {t:'模考：C16 Test 3 四科', s:'按真实考试时间，含休息间隔', m:200},
+      {t:'听力：四个 Section 一次不停', s:'整套不暂停，练注意力续航', m:60},
+      {t:'阅读：连续 3 篇 60 分钟', s:'只检查一次，训练一次成稿', m:60},
+      {t:'写作：三种题型各 1 篇', s:'每篇 38 分钟内完成', m:120},
+      {t:'口语：完整流程 3 组', s:'找同伴或自言自语，全程录音', m:45}
+    ]},
+    { n:10, theme:'收尾与稳定', note:'最后一周不学新东西，只把熟练度固定住。', tasks:[
+      {t:'最后一次全套模考', s:'用没做过的新题，C19 Test 4', m:200},
+      {t:'错题本最后通读', s:'标出 10 个最常犯的陷阱，考前只看这页', m:40},
+      {t:'写作：固定开头与总结', s:'Task 1 概述句、Task 2 立场句各背熟一套', m:40},
+      {t:'口语：Part 1 全部过一遍', s:'语速自然、不背稿，控制每答 25–30 秒', m:40},
+      {t:'考前清单', s:'证件、路线、耳机试音、作息调整', m:30}
+    ]}
+  ];
+  var ALL_TASKS = PLAN.reduce(function(a,w){ return a.concat(w.tasks.map(function(t,i){
+    return {id:'w'+w.n+'t'+(i+1), n:w.n, theme:w.theme, t:t.t, s:t.s, m:t.m};
+  })); }, []);
+
+  /* ============ 词表 ============ */
+  var WORDS = [
+    ['mitigate','减轻，缓和','Governments can mitigate congestion by pricing road use.'],
+    ['sustainable','可持续的','Sustainable design reduces long-term energy costs.'],
+    ['deteriorate','恶化','Air quality deteriorated sharply after the factory opened.'],
+    ['infrastructure','基础设施','Rail infrastructure shapes where people can live.'],
+    ['incentive','激励；动机','Tax incentives encouraged firms to hire graduates.'],
+    ['subsidise','补贴','Public funds subsidise rural clinics.'],
+    ['demographic','人口结构的','Demographic change reshapes demand for schools.'],
+    ['comply','遵守','Factories must comply with emission limits.'],
+    ['ambiguous','含糊的','The instruction was ambiguous, so results varied.'],
+    ['feasible','可行的','A four-day week is feasible in some industries.'],
+    ['substantial','大量的','A substantial share of income goes to rent.'],
+    ['negligible','微不足道的','The effect on prices was negligible.'],
+    ['allocate','分配','Funds were allocated to training rather than equipment.'],
+    ['constrain','限制','Budget limits constrain what cities can build.'],
+    ['advocate','主张，提倡','Critics advocate stricter labelling rules.'],
+    ['undermine','削弱','Constant delays undermine public trust.'],
+    ['prevalent','普遍的','Remote work is prevalent among software teams.'],
+    ['resilient','有韧性的','Local supply chains proved more resilient.'],
+    ['foster','促进，培养','Mixed-age classrooms foster cooperation.'],
+    ['scrutinise','仔细审查','Regulators scrutinise claims made in advertising.'],
+    ['versatile','多用途的','Bamboo is a versatile building material.'],
+    ['offset','抵消','Tree planting only partly offsets emissions.'],
+    ['cumulative','累积的','The cumulative effect appears after a decade.'],
+    ['discrepancy','差异，不一致','A discrepancy between the two datasets went unexplained.'],
+    ['marginal','边缘的，微小的','The reform had only a marginal impact.'],
+    ['procure','采购','Hospitals procure equipment through central contracts.'],
+    ['empirical','实证的','The claim rests on empirical evidence, not intuition.'],
+    ['correlation','相关性','Correlation does not establish causation.'],
+    ['threshold','阈值，界限','Once the threshold is crossed, costs rise fast.'],
+    ['scarce','稀缺的','Clean water is scarce in the region.'],
+    ['arbitrary','武断的，随意的','The cut-off date seemed arbitrary.'],
+    ['consolidate','整合，巩固','Several small farms consolidated into one cooperative.'],
+    ['distort','扭曲','Subsidies can distort market signals.'],
+    ['exempt','免除','Small firms are exempt from the reporting rule.'],
+    ['unprecedented','前所未有的','Growth was unprecedented in the post-war period.'],
+    ['viable','可行的，能存活下去的','Community gardens proved viable in dense cities.'],
+    ['retain','保留，留住','Schools struggle to retain experienced teachers.'],
+    ['surge','激增','Demand surged after the subsidy was announced.'],
+    ['curb','抑制，限制','The city curbed car use in the old town.'],
+    ['norm','常态，规范','Flexible hours have become the norm.']
+  ];
+
+  /* ============ 写作题库 ============ */
+  var T2 = [
+    ['双边讨论','Some people believe that university students should study whatever they like. Others think they should only be allowed to study subjects that will be useful in the future, such as science and technology. Discuss both views and give your own opinion.'],
+    ['利弊分析','In many countries, the proportion of older people is steadily increasing. Does this trend bring more benefits or drawbacks?'],
+    ['双边讨论','Some think the best way to improve public health is to increase the number of sports facilities. Others believe other measures are needed. Discuss both views and give your opinion.'],
+    ['原因与评价','Many people today choose to live alone. Why is this happening? Is it a positive or negative development?'],
+    ['是否同意','Advertising aimed at children should be banned. To what extent do you agree or disagree?'],
+    ['双边讨论','Some people think governments should spend money on public transport rather than on new roads. Discuss both views and give your own opinion.'],
+    ['利弊分析','In the digital age, many people read news on social media instead of traditional newspapers. Is this a positive or negative development?'],
+    ['是否同意','Some believe that unpaid community service should be a compulsory part of high school programmes. Do you agree or disagree?'],
+    ['原因与评价','International tourism has grown rapidly in recent decades. Why is this the case, and is it a beneficial development?'],
+    ['双边讨论','Some people think that the increasing use of computers in education has more disadvantages than advantages. Discuss both views.'],
+    ['利弊分析','Working from home has become common in many industries. What are the advantages and disadvantages of this trend?'],
+    ['是否同意','Some argue that art subjects should be compulsory at school. To what extent do you agree or disagree?'],
+    ['问题解决','Many cities are expanding and losing green space. Why is this happening, and what can be done about it?'],
+    ['是否同意','Some believe individuals can do little to improve the environment, and only governments and companies can make a difference. Do you agree?'],
+    ['问题解决','Plastic waste is a growing global problem. What are the causes, and what measures could reduce it?']
+  ];
+  var T1 = [
+    ['折线图','某国 1990 至 2020 年四种能源发电占比的变化'],
+    ['柱状图','两座城市居民通勤方式比例：私家车、公交、骑行、步行'],
+    ['饼图','某家庭 2000 年与 2020 年支出结构对比'],
+    ['表格','四个国家高等教育入学率与人均 GDP 对照'],
+    ['流程图','瓶装水从取水、灌装到回收的处理流程'],
+    ['地图','某小镇 1980 年与 2020 年的布局变化'],
+    ['组合图','某国快递量（柱）与平均配送时长（线）'],
+    ['柱状图','不同年龄段每周运动时长（男 / 女）']
+    ];
+  var S1 = [
+    ['学习与工作',['Do you work or are you a student?','What subject are you studying, and why did you choose it?','What do you like most about your studies?','Would you change anything about your course?']],
+    ['家乡',['Where is your hometown?','What is your hometown famous for?','Has your hometown changed in recent years?']],
+    ['住处',['Do you live in a house or an apartment?','What do you like about the place you live in?','Would you like to change anything about your home?']],
+    ['日常节奏',['Are you a morning person or an evening person?','What is the busiest part of your day?','How do you usually plan your day?']],
+    ['饮食',['Do you cook at home?','What food is popular in your country?','Have your eating habits changed since you were a child?']],
+    ['科技',['How often do you use your phone?','Do you prefer texting or calling?','Is there an app you could not live without?']],
+    ['旅行',['Do you enjoy travelling?','What kind of places do you like to visit?','Do you prefer travelling alone or with others?']],
+    ['空闲与运动',['Do you play any sport?','How do you usually relax at weekends?','Is there a hobby you would like to take up?']],
+    ['阅读',['Do you read much in your free time?','What kind of books do you enjoy?','Did you read more as a child?']],
+    ['天气与季节',['What is the weather like where you live?','Which season do you prefer, and why?']],
+    ['朋友',['How often do you see your friends?','What do you usually do together?']]
+  ];
+  var S2 = [
+    ['Describe a person who has influenced you.',['who this person is','how you know them','what they have done','why they influenced you']],
+    ['Describe a place you like to spend time in.',['where it is','what it looks like','what you do there','why you like it']],
+    ['Describe a skill you learned that was difficult at first.',['what the skill is','how you learned it','what was hard','how you feel about it now']],
+    ['Describe a piece of technology you find useful.',['what it is','how you use it','how long you have had it','why it is useful']],
+    ['Describe an important decision you have made.',['what the decision was','what led to it','who was involved','how it turned out']],
+    ['Describe a book or film that changed your view.',['what it was','when you came across it','what it was about','how it changed your view']],
+    ['Describe a time you helped someone.',['who you helped','what the situation was','what you did','how you felt afterwards']],
+    ['Describe a city you would like to visit.',['where it is','what you know about it','what you would do there','why you want to go']],
+    ['Describe a memorable journey.',['where you went','who you went with','what happened on the way','why it was memorable']],
+    ['Describe something you own that is important to you.',['what it is','how you got it','how long you have had it','why it matters']]
+  ];
+  var S3 = [
+    ['工作','Why do young people change jobs more often than before?'],
+    ['教育','Should universities focus on employment skills or academic knowledge?'],
+    ['科技','How has technology changed the way people communicate?'],
+    ['消费','Do you think advertising influences buying habits? How?'],
+    ['城市','What can governments do to reduce traffic in cities?'],
+    ['城市','Is it better to live in a city or in the countryside? Why?'],
+    ['家庭','How has family structure changed in your country?'],
+    ['教育','Should schools teach financial literacy?'],
+    ['社会','Are international sporting events worth the cost?'],
+    ['环境','How can individuals reduce plastic waste?']
+  ];
+
+  /* ============ 状态 ============ */
+  function fresh(){
+    return {
+      app:'ielts-bench', version:3, createdAt: today(),
+      profile:{
+        name:'', examDate: addDays(today(),73),
+        target:{overall:7.0, L:7.5, R:7.5, W:6.5, S:6.5},
+        weeklyHours:12, startedAt: today()
+      },
+      tasks:{}, logs:[], words:[], writing:[], speaking:[], sessions:[],
+      meta:{lastExport:null, lastImport:null, savedAt:null}
+    };
+  }
+  function load(){
+    var raw = null;
+    try{ raw = localStorage.getItem(KEY); }catch(e){ storageOK = false; }
+    if(!raw){ raw = mem; }
+    if(!raw) return null;
+    try{ return normalize(JSON.parse(raw)); }catch(e){ return null; }
+  }
+  function normalize(o){
+    var base = fresh();
+    o = o || {};
+    var s = {
+      app:'ielts-bench', version:3,
+      createdAt: o.createdAt || base.createdAt,
+      profile: Object.assign({}, base.profile, o.profile || {}, {target: Object.assign({}, base.profile.target, (o.profile&&o.profile.target)||{})}),
+      tasks: o.tasks && typeof o.tasks === 'object' ? o.tasks : {},
+      logs: arr(o.logs), words: arr(o.words), writing: arr(o.writing),
+      speaking: arr(o.speaking), sessions: arr(o.sessions),
+      meta: Object.assign({}, base.meta, o.meta || {})
+    };
+    if(!s.profile.examDate || !/^\d{4}-\d{2}-\d{2}$/.test(s.profile.examDate)) s.profile.examDate = base.profile.examDate;
+    if(!s.profile.startedAt || !/^\d{4}-\d{2}-\d{2}$/.test(s.profile.startedAt)) s.profile.startedAt = today();
+    return s;
+  }
+  function arr(a){ return Array.isArray(a) ? a : []; }
+
+  var S = load() || fresh();
+  if(!S.words.length) S.words = WORDS.map(function(w){
+    return {id:uid(), term:w[0], meaning:w[1], ex:w[2], lv:0, addedAt: today(), dueAt: today()};
+  });
+
+  function save(){
+    S.meta.savedAt = new Date().toISOString();
+    var str = JSON.stringify(S);
+    try{ localStorage.setItem(KEY, str); storageOK = true; }
+    catch(e){ storageOK = false; mem = str; }
+  }
+
+  var ui = { route:'overview', metric:'ALL', lex:'all', wPart:'T2', sPart:'1', openWeek:null };
+  var toastTimer = null;
+  function toast(msg){
+    var t = $('toast'); if(!t) return;
+    t.textContent = msg; t.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.classList.remove('on'); }, 2400);
+  }
+
+  /* ============ 派生数据 ============ */
+  function curWeek(){
+    var d = diffDays(S.profile.startedAt, today());
+    return Math.min(PLAN.length, Math.max(1, Math.floor(d/7) + 1));
+  }
+  function weekOf(n){ return PLAN[n-1]; }
+  function weekDone(n){
+    return PLAN[n-1].tasks.filter(function(_,i){ return S.tasks['w'+n+'t'+(i+1)] && S.tasks['w'+n+'t'+(i+1)].done; }).length;
+  }
+  function allDates(){
+    var set = {};
+    Object.keys(S.tasks).forEach(function(k){ if(S.tasks[k] && S.tasks[k].doneAt) set[S.tasks[k].doneAt] = 1; });
+    S.logs.forEach(function(l){ if(l.date) set[l.date] = 1; });
+    S.writing.forEach(function(l){ if(l.date) set[l.date] = 1; });
+    S.speaking.forEach(function(l){ if(l.date) set[l.date] = 1; });
+    S.sessions.forEach(function(l){ if(l.date) set[l.date] = 1; });
+    return set;
+  }
+  function streak(){
+    var set = allDates();
+    var d = today();
+    if(!set[d]) d = addDays(d, -1);
+    var n = 0;
+    while(set[d] && n < 400){ n++; d = addDays(d, -1); }
+    return n;
+  }
+  function totalMinutes(){
+    return S.sessions.reduce(function(a,s){ return a + (+s.minutes||0); }, 0)
+      + S.writing.reduce(function(a,s){ return a + (+s.minutes||0); }, 0)
+      + S.speaking.reduce(function(a,s){ return a + (+s.minutes||0); }, 0);
+  }
+  function overallOf(bands){
+    var v = ['L','R','W','S'].filter(function(k){ return typeof bands[k] === 'number'; });
+    if(!v.length) return null;
+    var sum = v.reduce(function(a,k){ return a + bands[k]; }, 0);
+    var avg = sum / v.length;
+    return Math.round(avg * 2) / 2;
+  }
+  function logsFor(metric){
+    if(metric === 'ALL') return S.logs.filter(function(l){ return l.skill === 'ALL' && typeof l.score === 'number'; });
+    return S.logs.filter(function(l){ return l.skill === metric && typeof l.score === 'number'; });
+  }
+  function avgOf(metric, take){
+    var list = logsFor(metric).slice().sort(function(a,b){ return parseD(a.date) - parseD(b.date); });
+    if(!list.length) return null;
+    var tail = take ? list.slice(-take) : list;
+    var sum = tail.reduce(function(a,l){ return a + l.score; }, 0);
+    return Math.round((sum / tail.length) * 10) / 10;
+  }
+  function dueWords(){
+    var t = today();
+    return S.words.filter(function(w){ return w.lv < 4 && (!w.dueAt || w.dueAt <= t); });
+  }
+  function masteredCount(){ return S.words.filter(function(w){ return w.lv >= 3; }).length; }
+
+  /* ============ 图表 ============ */
+  function lineChart(items, opt){
+    opt = opt || {};
+    if(!items.length) return '';
+    var W = 760, H = 216, pl = 54, pr = 24, pt = 24, pb = 34;
+    var vals = items.map(function(i){ return i.v; });
+    var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+    var min = opt.min != null ? opt.min : Math.max(0, Math.floor((lo - 0.5) * 2) / 2);
+    var max = opt.max != null ? opt.max : Math.min(9, Math.ceil((hi + 0.5) * 2) / 2);
+    if(max - min < 1) max = min + 1;
+    var step = (max - min) <= 2 ? 0.5 : 1;
+    var xf = function(i){ return items.length === 1 ? pl + (W - pl - pr) / 2 : pl + i * (W - pl - pr) / (items.length - 1); };
+    var yf = function(v){ return pt + (max - v) / (max - min) * (H - pt - pb); };
+    var out = ['<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(opt.label || '成绩趋势') + '">'];
+    for(var g = min; g <= max + 0.001; g += step){
+      var y = yf(g);
+      out.push('<line class="' + (g === min ? 'axis' : 'gl') + '" x1="' + pl + '" y1="' + y + '" x2="' + (W - pr) + '" y2="' + y + '"/>');
+      out.push('<text x="' + (pl - 16) + '" y="' + (y + 4) + '" text-anchor="end">' + g.toFixed(1) + '</text>');
+    }
+    if(opt.goal != null){
+      var gy = yf(opt.goal);
+      out.push('<line x1="' + pl + '" y1="' + gy + '" x2="' + (W - pr) + '" y2="' + gy + '" stroke="#B03A2B" stroke-width="1" stroke-dasharray="4 5" opacity=".85"/>');
+    }
+    out.push('<polyline class="line" points="' + items.map(function(it, i){ return xf(i) + ',' + yf(it.v); }).join(' ') + '"/>');
+    items.forEach(function(it, i){
+      var cx = xf(i), cy = yf(it.v);
+      out.push('<circle class="dot" cx="' + cx + '" cy="' + cy + '"><title>' + esc(it.label + ' · ' + it.v.toFixed(1)) + '</title></circle>');
+      var anchor = i === 0 ? 'start' : (i === items.length - 1 ? 'end' : 'middle');
+      var lx = i === 0 ? cx + 9 : (i === items.length - 1 ? cx - 2 : cx);
+      out.push('<text class="val" x="' + lx + '" y="' + (cy - 11) + '" text-anchor="' + anchor + '">' + it.v.toFixed(1) + '</text>');
+      out.push('<text x="' + cx + '" y="' + (H - 10) + '" text-anchor="middle">' + esc(shortD(it.label)) + '</text>');
+    });
+    out.push('</svg>');
+    return out.join('');
+  }
+
+  /* ============ 导航 ============ */
+  var NAV = [
+    {r:'overview', t:'概览'},
+    {r:'plan', t:'计划'},
+    {r:'scores', t:'成绩'},
+    {r:'lexis', t:'词汇'},
+    {r:'writing', t:'写作'},
+    {r:'speaking', t:'口语'},
+    {r:'data', t:'数据'}
+  ];
+  function navBadge(r){
+    if(r === 'plan') return 'W' + curWeek();
+    if(r === 'scores') return S.logs.length || '';
+    if(r === 'lexis'){ var d = dueWords().length; return d || ''; }
+    if(r === 'writing') return S.writing.length || '';
+    if(r === 'speaking') return S.speaking.length || '';
+    return '';
+  }
+
+  /* ============ 视图：概览 ============ */
+  function viewOverview(){
+    var wk = curWeek(), w = weekOf(wk), done = weekDone(wk);
+    var left = diffDays(today(), S.profile.examDate);
+    var t = S.profile.target;
+    var streakN = streak(), mins = totalMinutes();
+    var mocks = S.logs.filter(function(l){ return l.skill === 'ALL'; }).length;
+
+    var rows = w.tasks.map(function(tk, i){
+      var id = 'w'+wk+'t'+(i+1), st = S.tasks[id] || {};
+      return '<label class="taskrow ' + (st.done ? 'done' : '') + '">'
+        + '<input type="checkbox" data-act="toggle" data-arg="' + id + '"' + (st.done ? ' checked' : '') + ' aria-label="' + esc(tk.t) + '">'
+        + '<span><span class="t">' + esc(tk.t) + '</span><span class="s">' + esc(tk.s) + '</span></span>'
+        + '<span class="m">' + tk.m + '′</span></label>';
+    }).join('');
+
+    var series = logsFor('ALL').slice().sort(function(a,b){ return parseD(a.date) - parseD(b.date); }).slice(-8)
+      .map(function(l){ return {label:l.date, v:l.score}; });
+
+    var recent = S.logs.slice().sort(function(a,b){ return parseD(b.date) - parseD(a.date); }).slice(0, 4);
+
+    var cmp = SK.map(function(s){
+      var a = avgOf(s.k, 3), goal = t[s.k];
+      var pct = a == null ? 0 : Math.min(100, a / 9 * 100);
+      return '<div class="cmp"><div class="l"><span>' + s.zh + '</span><b>' + (a == null ? '—' : a.toFixed(1)) + ' <i>/ ' + goal.toFixed(1) + '</i></b></div>'
+        + '<div class="track"><div class="fill" style="width:' + pct + '%"></div><div class="goal" style="left:' + Math.min(100, goal / 9 * 100) + '%"></div></div></div>';
+    }).join('');
+
+    return '<h1>第 ' + wk + ' 周 · ' + esc(w.theme) + '</h1>'
+      + '<p class="lede">' + esc(w.note) + ' 距 ' + esc(cnDate(S.profile.examDate)) + ' 还有 <b>' + Math.max(0, left) + '</b> 天，本周完成 ' + done + ' / ' + w.tasks.length + ' 项。</p>'
+      + '<div class="stats">'
+        + '<div class="stat"><div class="k">连续打卡</div><div class="v">' + streakN + '<em>天</em></div></div>'
+        + '<div class="stat"><div class="k">累计专注</div><div class="v">' + (Math.round(mins/60*10)/10) + '<em>小时</em></div></div>'
+        + '<div class="stat"><div class="k">模考次数</div><div class="v">' + mocks + '<em>次</em></div></div>'
+        + '<div class="stat"><div class="k">待复习词</div><div class="v">' + dueWords().length + '<em>个</em></div></div>'
+      + '</div>'
+      + '<div class="grid-2"><div>'
+        + '<section class="block"><div class="hd"><h2>本周任务</h2><span class="sub">共 ' + w.tasks.length + ' 项 · ' + w.tasks.reduce(function(a,x){return a+x.m;},0) + ' 分钟</span></div>'
+          + '<div class="tasks">' + rows + '</div>'
+          + '<div class="btnrow"><a class="btn ghost" href="#/plan">看完整 10 周计划</a></div>'
+        + '</section>'
+        + '<section class="block"><div class="hd"><h2>总分走势</h2><span class="sub">最近 ' + series.length + ' 次全套</span></div>'
+          + '<div class="chartwrap">' + (series.length ? lineChart(series, {goal:t.overall, label:'总分走势'}) : '<div class="empty">还没有全套模考记录。第一周先把 C19 Test 1 做完，就有了起点。</div>') + '</div>'
+          + (series.length ? '<p class="legend"><i></i>虚线为目标 ' + t.overall.toFixed(1) + ' 分</p>' : '')
+        + '</section>'
+        + '<section class="block"><div class="hd"><h2>最近记录</h2><a class="btn sm ghost" href="#/scores">去添加</a></div>'
+          + (recent.length ? '<table class="tbl"><tbody>' + recent.map(function(l){
+              return '<tr><td class="n">' + esc(shortD(l.date)) + '</td><td>' + esc(skName(l.skill)) + '</td><td class="hide-sm note">' + esc(l.material || '—') + '</td><td class="sc">' + (typeof l.score === 'number' ? l.score.toFixed(1) : '—') + '</td></tr>';
+            }).join('') + '</tbody></table>' : '<div class="empty">记录第一次练习后，这里会按时间倒序列出。</div>')
+        + '</section>'
+      + '</div><aside>'
+        + '<section class="block" style="border-top:0;padding-top:0"><h3>专注计时</h3>'
+          + '<div class="timer" style="border-top:1px solid var(--line-soft);padding:14px 0"><div><div class="clock" id="focusClock">00:00</div><div class="meta" id="focusMeta">开始后计时，结束时自动记入累计专注。</div></div></div>'
+          + '<div class="btnrow" style="margin-top:0"><button class="btn solid sm" data-act="focus-start">开始</button><button class="btn sm" data-act="focus-end">结束并记录</button></div>'
+        + '</section>'
+        + '<section class="block"><div class="hd"><h2>目标与最近</h2><span class="sub">近 3 次平均</span></div>' + cmp
+          + '<p class="hint" style="margin-top:12px">红线是目标小分。总分目标 <b class="num">' + t.overall.toFixed(1) + '</b>，最近全套 <b class="num">' + (avgOf('ALL', 3) == null ? '—' : avgOf('ALL', 3).toFixed(1)) + '</b>。</p>'
+        + '</section>'
+        + '<section class="block"><div class="hd"><h2>快记</h2></div>'
+          + '<div class="btnrow" style="margin-top:0"><a class="btn ghost sm" href="#/scores">记一次成绩</a><a class="btn ghost sm" href="#/writing">写一篇</a><a class="btn ghost sm" href="#/speaking">练口语</a></div>'
+        + '</section>'
+      + '</aside></div>'
+      + '<p class="footnote">所有数据只存在这台设备的浏览器里。换设备前，到「数据」页导出进度文件；' + (storageOK ? '' : '<b>当前浏览器禁止本地存储，请尽快导出备份。</b>') + '</p>';
+  }
+
+  /* ============ 视图：计划 ============ */
+  function viewPlan(){
+    var wk = curWeek();
+    if(ui.openWeek == null) ui.openWeek = wk;
+    var body = PLAN.map(function(w){
+      var done = weekDone(w.n), total = w.tasks.length;
+      var pct = Math.round(done / total * 100);
+      var open = ui.openWeek === w.n;
+      var tasks = w.tasks.map(function(tk, i){
+        var id = 'w'+w.n+'t'+(i+1), st = S.tasks[id] || {};
+        return '<label class="taskrow ' + (st.done ? 'done' : '') + '">'
+          + '<input type="checkbox" data-act="toggle" data-arg="' + id + '"' + (st.done ? ' checked' : '') + ' aria-label="' + esc(tk.t) + '">'
+          + '<span><span class="t">' + esc(tk.t) + '</span><span class="s">' + esc(tk.s) + '</span></span>'
+          + '<span class="m">' + tk.m + '′</span></label>';
+      }).join('');
+      return '<div class="week ' + (open ? 'open' : '') + ' ' + (w.n === wk ? 'cur' : '') + '">'
+        + '<button class="week-hd" data-act="week" data-arg="' + w.n + '" aria-expanded="' + open + '">'
+          + '<span class="wn">W' + w.n + '</span>'
+          + '<span><span class="wt">' + esc(w.theme) + '</span></span>'
+          + '<span class="wp"><span class="bar"><i style="width:' + pct + '%"></i></span>' + done + '/' + total + '<span class="care"></span></span>'
+        + '</button>'
+        + '<div class="week-body"><p class="hint" style="margin:0 0 6px">' + esc(w.note) + '</p><div class="tasks">' + tasks + '</div></div></div>';
+    }).join('');
+
+    var totalDone = ALL_TASKS.filter(function(t){ return S.tasks[t.id] && S.tasks[t.id].done; }).length;
+
+    return '<h1>10 周计划</h1>'
+      + '<p class="lede">从基线模考到考前一周，共 50 项任务。做完一项勾一项，勾选会记进打卡。当前整体进度 <b>' + totalDone + ' / 50</b>。计划周期从 ' + esc(cnDate(S.profile.startedAt)) + ' 起算，可在「数据」页重置。</p>'
+      + '<div class="block" style="padding-top:8px">' + body + '</div>'
+      + '<div class="btnrow"><button class="btn ghost" data-act="week-open-cur">跳到本周</button></div>';
+  }
+
+  /* ============ 视图：成绩 ============ */
+  function viewScores(){
+    var metric = ui.metric;
+    var list = S.logs.slice().sort(function(a,b){ return parseD(b.date) - parseD(a.date); });
+    var series = logsFor(metric).slice().sort(function(a,b){ return parseD(a.date) - parseD(b.date); }).slice(-10)
+      .map(function(l){ return {label:l.date, v:l.score}; });
+    var goal = metric === 'ALL' ? S.profile.target.overall : S.profile.target[metric];
+    var avg = avgOf(metric, 5);
+
+    var rows = list.map(function(l){
+      var bands = l.bands ? ['L','R','W','S'].map(function(k){ return l.bands[k] == null ? '·' : l.bands[k].toFixed(1); }).join(' / ') : '';
+      return '<tr><td class="n">' + esc(l.date) + '</td><td>' + esc(skName(l.skill)) + '</td>'
+        + '<td class="hide-sm">' + esc(l.material || '—') + (bands ? '<div class="note">' + bands + '</div>' : '') + '</td>'
+        + '<td class="sc">' + (typeof l.score === 'number' ? l.score.toFixed(1) : '—') + '</td>'
+        + '<td class="note hide-sm">' + esc(l.wrong || l.note || '') + '</td>'
+        + '<td><button class="xbtn" data-act="del-log" data-arg="' + l.id + '">删除</button></td></tr>';
+    }).join('');
+
+    var segs = [{k:'ALL', t:'总分'}].concat(SK.map(function(s){ return {k:s.k, t:s.zh}; })).map(function(s){
+      return '<button class="' + (metric === s.k ? 'on' : '') + '" data-act="metric" data-arg="' + s.k + '">' + s.t + '</button>';
+    }).join('');
+
+    return '<h1>成绩记录</h1>'
+      + '<p class="lede">按雅思 0.5 分档记。全套模考填四项小分，系统自动算总分；单科练习只填一个分数。错的题型写在备注里，复盘时按它归类。</p>'
+      + '<div class="panel"><h3>添加一条</h3><p class="p-lede">日期默认今天，材料写清题号，方便回炉。</p>'
+        + '<form class="form" id="logForm" data-form="log">'
+          + '<div class="field"><label for="lgDate">日期</label><input id="lgDate" name="date" type="date" value="' + today() + '" required></div>'
+          + '<div class="field"><label for="lgSkill">类型</label><select id="lgSkill" name="skill" data-act="logkind">'
+            + '<option value="ALL">全套模考</option><option value="L">听力</option><option value="R">阅读</option><option value="W">写作</option><option value="S">口语</option></select></div>'
+          + '<div class="field"><label for="lgMat">材料</label><input id="lgMat" name="material" placeholder="C19 Test 1"></div>'
+          + '<div class="field" id="oneScoreWrap"><label for="lgScore">分数</label><input id="lgScore" name="score" type="number" step="0.5" min="0" max="9" placeholder="6.5"></div>'
+          + '<div class="field wide" id="bandWrap" style="display:none"><label>四项小分</label>'
+            + '<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px">'
+            + ['L','R','W','S'].map(function(k){
+                return '<div class="field"><label for="bd' + k + '" style="font-size:10.5px;letter-spacing:.1em">' + skName(k) + '</label><input id="bd' + k + '" name="band' + k + '" type="number" step="0.5" min="0" max="9" placeholder="—"></div>';
+              }).join('')
+            + '</div></div>'
+          + '<div class="field-row"><div class="field" style="flex:1 1 260px"><label for="lgWrong">错的题型 / 备注</label><input id="lgWrong" name="wrong" placeholder="Heading 错 3 个、时间不够"></div><button class="btn solid" type="submit">记下来</button></div>'
+        + '</form></div>'
+      + '<section class="block"><div class="hd"><h2>趋势</h2><span class="seg">' + segs + '</span></div>'
+        + '<div class="chartwrap">' + (series.length ? lineChart(series, {goal:goal, label:skName(metric) + '趋势'}) : '<div class="empty">这门还没有带分数的记录。</div>') + '</div>'
+        + (series.length ? '<p class="legend"><i></i>虚线为目标 ' + goal.toFixed(1) + ' 分 · 红点为实际成绩</p>' : '')
+        + '<p class="hint" style="margin-top:10px">近 5 次平均 <b class="num">' + (avg == null ? '—' : avg.toFixed(1)) + '</b>，目标 <b class="num">' + goal.toFixed(1) + '</b>。' + (avg == null ? '' : (avg >= goal ? '已达标，接下来练稳定性。' : '还差 ' + (goal - avg).toFixed(1) + ' 分。')) + '</p>'
+      + '</section>'
+      + '<section class="block"><div class="hd"><h2>全部记录</h2><span class="sub">' + list.length + ' 条</span></div>'
+        + (list.length ? '<table class="tbl"><thead><tr><th>日期</th><th>科目</th><th class="hide-sm">材料 / 小分</th><th>分数</th><th class="hide-sm">备注</th><th></th></tr></thead><tbody>' + rows + '</tbody></table>' : '<div class="empty">还没有记录。第一次做完听力就可以先记一条单科分。</div>')
+      + '</section>';
+  }
+
+  /* ============ 视图：词汇 ============ */
+  function viewLexis(){
+    var t = today();
+    var all = S.words.length, due = dueWords().length, got = masteredCount();
+    var list = S.words.slice().sort(function(a,b){ return (a.dueAt||'') < (b.dueAt||'') ? -1 : 1; });
+    if(ui.lex === 'due') list = list.filter(function(w){ return w.lv < 4 && (!w.dueAt || w.dueAt <= t); });
+    if(ui.lex === 'got') list = list.filter(function(w){ return w.lv >= 3; });
+    if(ui.lex === 'new') list = list.filter(function(w){ return w.lv === 0; });
+
+    var rows = list.map(function(w){
+      var dots = '';
+      for(var i=1;i<=4;i++) dots += '<span class="dot5 ' + (w.lv >= i ? 'on' : '') + '"></span>';
+      return '<div class="lexrow ' + (w.lv >= 3 ? 'got' : '') + '">'
+        + '<div><div class="term">' + esc(w.term) + '</div><div class="lv"><span class="dots">' + dots + '</span></div></div>'
+        + '<div class="def">' + esc(w.meaning) + '<span class="ex">' + esc(w.ex || '') + '</span></div>'
+        + '<div style="display:flex;gap:6px;justify-content:flex-end"><button class="btn sm ghost" data-act="word-ok" data-arg="' + w.id + '">认识</button><button class="btn sm ghost" data-act="word-no" data-arg="' + w.id + '">不熟</button></div>'
+        + '</div>';
+    }).join('');
+
+    return '<h1>词汇与同义替换</h1>'
+      + '<p class="lede">40 个学术高频词已在库里。复习节奏按熟练度自动排：不熟次日再来，熟悉后间隔拉到 2、5、9、21 天。「认识」升一级，「不熟」退回新词。</p>'
+      + '<div class="stats" style="margin-bottom:26px">'
+        + '<div class="stat"><div class="k">词库</div><div class="v">' + all + '<em>词</em></div></div>'
+        + '<div class="stat"><div class="k">今日待复习</div><div class="v">' + due + '<em>词</em></div></div>'
+        + '<div class="stat"><div class="k">已掌握</div><div class="v">' + got + '<em>词</em></div></div>'
+        + '<div class="stat"><div class="k">未开始</div><div class="v">' + S.words.filter(function(w){ return w.lv === 0; }).length + '<em>词</em></div></div>'
+      + '</div>'
+      + '<div class="panel"><h3>加一个词</h3><p class="p-lede">只收你在真题里遇到的词，例句抄原句。</p>'
+        + '<form class="form" data-form="word">'
+          + '<div class="field"><label for="wTerm">词 / 短语</label><input id="wTerm" name="term" required placeholder="mitigate"></div>'
+          + '<div class="field"><label for="wMean">释义</label><input id="wMean" name="meaning" required placeholder="减轻，缓和"></div>'
+          + '<div class="field wide"><label for="wEx">例句</label><input id="wEx" name="ex" placeholder="Governments can mitigate congestion by pricing road use."></div>'
+          + '<div class="field" style="align-self:end"><button class="btn solid" type="submit">入库</button></div>'
+        + '</form></div>'
+      + '<section class="block"><div class="hd"><h2>词库</h2><span class="seg">'
+        + [['all','全部'],['due','待复习'],['new','新词'],['got','已掌握']].map(function(x){
+            return '<button class="' + (ui.lex === x[0] ? 'on' : '') + '" data-act="lex" data-arg="' + x[0] + '">' + x[1] + '</button>';
+          }).join('') + '</span></div>'
+        + (rows ? rows : '<div class="empty">这个分组里没有词。切到「全部」看看。</div>')
+      + '</section>';
+  }
+
+  /* ============ 视图：写作 ============ */
+  function viewWriting(){
+    var part = ui.wPart;
+    var prompts = part === 'T2' ? T2 : T1;
+    var list = S.writing.slice().sort(function(a,b){ return parseD(b.date) - parseD(a.date); });
+
+    var rows = prompts.map(function(p, i){
+      return '<div class="prompt"><div class="no">' + pad(i+1) + '</div>'
+        + '<div><div class="q">' + esc(p[1]) + '</div><div class="meta">' + esc(part) + ' · ' + esc(p[0]) + ' · ' + (part === 'T2' ? '40 分钟' : '20 分钟') + '</div></div>'
+        + '<div class="go"><button class="btn sm ghost" data-act="start-w" data-arg="' + (part === 'T2' ? 40 : 20) + '">计时</button></div></div>';
+    }).join('');
+
+    var logs = list.map(function(l){
+      return '<tr><td class="n">' + esc(l.date) + '</td><td>' + esc(l.type) + '</td>'
+        + '<td class="hide-sm note">' + esc((l.prompt || '').slice(0, 46)) + ((l.prompt||'').length > 46 ? '…' : '') + '</td>'
+        + '<td class="n">' + (l.minutes || '—') + '′</td><td class="n">' + (l.words || '—') + '</td>'
+        + '<td class="sc">' + (l.band == null ? '—' : (+l.band).toFixed(1)) + '</td>'
+        + '<td><button class="xbtn" data-act="del-writing" data-arg="' + l.id + '">删除</button></td></tr>';
+    }).join('');
+
+    var avgT2 = avgBand('T2'), avgT1 = avgBand('T1');
+
+    return '<h1>写作</h1>'
+      + '<p class="lede">Task 1 二十分钟、Task 2 四十分钟，先限时写完，再冷静改。批改只看四件事：有没有回答题目、段落有没有中心、句子有没有连起来、词有没有重复。</p>'
+      + '<div class="timer"><div><div class="clock" id="cdClock">00:00</div><div class="meta" id="cdMeta">选一篇开始计时</div></div>'
+        + '<div class="btnrow" style="margin:0"><button class="btn sm" data-act="cd" data-arg="1200">20 分钟</button><button class="btn sm" data-act="cd" data-arg="2400">40 分钟</button><button class="btn sm ghost" data-act="cd-stop">停止</button></div></div>'
+      + '<section class="block"><div class="hd"><h2>题库</h2><span class="seg">'
+        + '<button class="' + (part === 'T2' ? 'on' : '') + '" data-act="wpart" data-arg="T2">Task 2 · ' + T2.length + '</button>'
+        + '<button class="' + (part === 'T1' ? 'on' : '') + '" data-act="wpart" data-arg="T1">Task 1 · ' + T1.length + '</button>'
+        + '</span></div><div class="promptlist">' + rows + '</div></section>'
+      + '<section class="block"><div class="hd"><h2>批改记录</h2><span class="sub">Task 2 均分 ' + (avgT2 == null ? '—' : avgT2.toFixed(1)) + ' · Task 1 均分 ' + (avgT1 == null ? '—' : avgT1.toFixed(1)) + '</span></div>'
+        + '<form class="form" data-form="writing" style="margin-bottom:18px">'
+          + '<div class="field"><label for="wrDate">日期</label><input id="wrDate" name="date" type="date" value="' + today() + '" required></div>'
+          + '<div class="field"><label for="wrType">题型</label><select id="wrType" name="type"><option>T2</option><option>T1</option></select></div>'
+          + '<div class="field"><label for="wrMin">用时（分钟）</label><input id="wrMin" name="minutes" type="number" min="1" max="120" placeholder="40"></div>'
+          + '<div class="field"><label for="wrWords">字数</label><input id="wrWords" name="words" type="number" min="50" max="500" placeholder="270"></div>'
+          + '<div class="field"><label for="wrBand">自评 / 批改分</label><input id="wrBand" name="band" type="number" step="0.5" min="0" max="9" placeholder="6.5"></div>'
+          + '<div class="field wide"><label for="wrPrompt">题目</label><input id="wrPrompt" name="prompt" placeholder="粘贴题目前半句"></div>'
+          + '<div class="field wide"><label for="wrNote">待改的三件事</label><input id="wrNote" name="notes" placeholder="概述句漏了、第二段论证空、连接词重复"></div>'
+          + '<div class="field" style="align-self:end"><button class="btn solid" type="submit">存档</button></div>'
+        + '</form>'
+        + (logs ? '<table class="tbl"><thead><tr><th>日期</th><th>题型</th><th class="hide-sm">题目</th><th>用时</th><th>字数</th><th>分数</th><th></th></tr></thead><tbody>' + logs + '</tbody></table>' : '<div class="empty">还没有批改记录。写第一篇时就记下用时和字数，一个月后能看出变化。</div>')
+      + '</section>';
+  }
+  function avgBand(type){
+    var list = S.writing.filter(function(l){ return l.type === type && l.band != null; });
+    if(!list.length) return null;
+    return list.reduce(function(a,l){ return a + (+l.band); }, 0) / list.length;
+  }
+
+  /* ============ 视图：口语 ============ */
+  function viewSpeaking(){
+    var part = ui.sPart;
+    var list = S.speaking.slice().sort(function(a,b){ return parseD(b.date) - parseD(a.date); });
+
+    var body = '';
+    if(part === '1'){
+      body = S1.map(function(g){
+        return '<div style="padding:12px 0;border-bottom:1px solid var(--line-soft)"><h3 style="margin-bottom:6px">' + esc(g[0]) + '</h3>'
+          + g[1].map(function(q){
+            return '<div class="prompt" style="border:0;padding:8px 0"><div class="no"></div><div class="q">' + esc(q) + '</div>'
+              + '<div class="go"><button class="btn sm ghost" data-act="start-s" data-arg="30">30 秒</button></div></div>';
+          }).join('') + '</div>';
+      }).join('');
+    } else if(part === '2'){
+      body = S2.map(function(c, i){
+        return '<div class="prompt"><div class="no">' + pad(i+1) + '</div><div><div class="q">' + esc(c[0]) + '</div>'
+          + '<div class="meta">You should say: ' + c[1].map(function(x){ return esc(x); }).join(' · ') + '</div></div>'
+          + '<div class="go"><button class="btn sm ghost" data-act="cd2">1′+2′</button></div></div>';
+      }).join('');
+    } else {
+      body = S3.map(function(c, i){
+        return '<div class="prompt"><div class="no">' + pad(i+1) + '</div><div><div class="q">' + esc(c[1]) + '</div><div class="meta">' + esc(c[0]) + ' · 目标 45 秒</div></div>'
+          + '<div class="go"><button class="btn sm ghost" data-act="start-s" data-arg="45">45 秒</button></div></div>';
+      }).join('');
+    }
+
+    var logs = list.map(function(l){
+      return '<tr><td class="n">' + esc(l.date) + '</td><td class="n">Part ' + esc(l.part) + '</td>'
+        + '<td class="hide-sm note">' + esc((l.prompt || '').slice(0, 42)) + ((l.prompt||'').length > 42 ? '…' : '') + '</td>'
+        + '<td class="n">' + (l.minutes || '—') + '′</td>'
+        + '<td class="note hide-sm">' + esc(l.notes || '') + '</td>'
+        + '<td><button class="xbtn" data-act="del-speaking" data-arg="' + l.id + '">删除</button></td></tr>';
+    }).join('');
+
+    return '<h1>口语</h1>'
+      + '<p class="lede">录音比默念有用。Part 1 每答 25–30 秒，Part 2 用满两分钟，Part 3 说清「为什么」而不只是「是什么」。练完记一句：这次卡在哪。</p>'
+      + '<div class="timer"><div><div class="clock" id="cdClock">00:00</div><div class="meta" id="cdMeta">准备 1 分钟，作答 2 分钟</div></div>'
+        + '<div class="btnrow" style="margin:0"><button class="btn sm" data-act="cd2">Part 2：1′+2′</button><button class="btn sm ghost" data-act="cd-stop">停止</button></div></div>'
+      + '<section class="block"><div class="hd"><h2>题库</h2><span class="seg">'
+        + [['1','Part 1'],['2','Part 2'],['3','Part 3']].map(function(x){
+            return '<button class="' + (part === x[0] ? 'on' : '') + '" data-act="spart" data-arg="' + x[0] + '">' + x[1] + '</button>';
+          }).join('') + '</span></div><div class="promptlist">' + body + '</div></section>'
+      + '<section class="block"><div class="hd"><h2>练习记录</h2><span class="sub">' + list.length + ' 次</span></div>'
+        + '<form class="form" data-form="speaking" style="margin-bottom:18px">'
+          + '<div class="field"><label for="spDate">日期</label><input id="spDate" name="date" type="date" value="' + today() + '" required></div>'
+          + '<div class="field"><label for="spPart">部分</label><select id="spPart" name="part"><option>1</option><option>2</option><option>3</option></select></div>'
+          + '<div class="field"><label for="spMin">时长（分钟）</label><input id="spMin" name="minutes" type="number" min="1" max="90" placeholder="15"></div>'
+          + '<div class="field wide"><label for="spPrompt">题目</label><input id="spPrompt" name="prompt" placeholder="Describe a skill you learned…"></div>'
+          + '<div class="field wide"><label for="spNote">卡在哪</label><input id="spNote" name="notes" placeholder="Part 3 只会列观点，没有展开原因"></div>'
+          + '<div class="field" style="align-self:end"><button class="btn solid" type="submit">记录</button></div>'
+        + '</form>'
+        + (logs ? '<table class="tbl"><thead><tr><th>日期</th><th>部分</th><th class="hide-sm">题目</th><th>时长</th><th class="hide-sm">复盘</th><th></th></tr></thead><tbody>' + logs + '</tbody></table>' : '<div class="empty">还没有口语记录。今晚挑三张 Part 2，录音后各记一条。</div>')
+      + '</section>';
+  }
+
+  /* ============ 视图：数据 ============ */
+  function viewData(){
+    var p = S.profile, t = p.target;
+    var done = ALL_TASKS.filter(function(x){ return S.tasks[x.id] && S.tasks[x.id].done; }).length;
+    var size = 0;
+    try{ size = localStorage.getItem(KEY).length; }catch(e){ size = JSON.stringify(S).length; }
+
+    return '<h1>数据与设置</h1>'
+      + '<p class="lede">进度存在浏览器本地。换电脑、清缓存、换浏览器都会丢，所以每次学完顺手导出一份；到新设备再导入，勾选和记录都会回来。</p>'
+      + '<div class="panel"><h3>导出一份进度</h3><p class="p-lede">得到一个 JSON 文件，含计划勾选、成绩、词汇、写作口语记录与专注时长。文件名带日期。</p>'
+        + '<div class="kv" style="margin-bottom:16px">'
+          + '<div><div class="k">计划完成</div><div class="v">' + done + '/50</div></div>'
+          + '<div><div class="k">成绩记录</div><div class="v">' + S.logs.length + '</div></div>'
+          + '<div><div class="k">词汇</div><div class="v">' + S.words.length + '</div></div>'
+          + '<div><div class="k">写作 / 口语</div><div class="v">' + S.writing.length + ' / ' + S.speaking.length + '</div></div>'
+          + '<div><div class="k">数据量</div><div class="v">' + (size > 1024 ? (Math.round(size/1024*10)/10) + ' KB' : size + ' B') + '</div></div>'
+        + '</div>'
+        + '<div class="btnrow" style="margin:0"><button class="btn solid" data-act="export">下载进度文件</button><button class="btn ghost" data-act="copy">复制 JSON</button></div>'
+        + '<p class="hint" style="margin-top:10px">上次导出：' + (S.meta.lastExport ? esc(cnDate(S.meta.lastExport.slice(0,10))) : '还没有导出过') + '</p>'
+      + '</div>'
+      + '<div class="panel"><h3>导入进度</h3><p class="p-lede">选择之前导出的 JSON。先看预览，再决定合并还是覆盖。</p>'
+        + '<label class="drop" for="importFile"><strong>选择或拖入 .json 文件</strong>导入前不会改动现有数据</label>'
+        + '<input id="importFile" type="file" accept="application/json,.json" hidden>'
+        + '<div class="prev" id="importPrev"></div>'
+      + '</div>'
+      + '<div class="panel"><h3>目标与考试信息</h3><p class="p-lede">改完保存即刻生效，倒计时与小分目标会跟着变。</p>'
+        + '<form class="form" data-form="profile">'
+          + '<div class="field"><label for="pfName">称呼</label><input id="pfName" name="name" value="' + esc(p.name) + '" placeholder="Katherine"></div>'
+          + '<div class="field"><label for="pfDate">考试日期</label><input id="pfDate" name="examDate" type="date" value="' + esc(p.examDate) + '" required></div>'
+          + '<div class="field"><label for="pfOverall">目标总分</label><input id="pfOverall" name="overall" type="number" step="0.5" min="4" max="9" value="' + t.overall + '"></div>'
+          + '<div class="field"><label for="pfHours">每周可用小时</label><input id="pfHours" name="weeklyHours" type="number" min="1" max="60" value="' + p.weeklyHours + '"></div>'
+          + ['L','R','W','S'].map(function(k){
+              return '<div class="field"><label for="pf' + k + '">' + skName(k) + '目标</label><input id="pf' + k + '" name="' + k + '" type="number" step="0.5" min="4" max="9" value="' + t[k] + '"></div>';
+            }).join('')
+          + '<div class="field wide" style="margin-top:4px"><label>计划起点</label><div class="btnrow" style="margin:0"><span class="hint">当前从 ' + esc(S.profile.startedAt) + ' 起算</span><button class="btn sm ghost" type="button" data-act="reset-plan">从今天重新起算 10 周</button></div></div>'
+          + '<div class="field" style="align-self:end"><button class="btn solid" type="submit">保存设置</button></div>'
+        + '</form></div>'
+      + '<div class="panel"><h3>清空</h3><p class="p-lede">清掉这台设备上的全部记录，回到初始状态。清空前请先导出。</p>'
+        + '<div class="btnrow" style="margin:0"><button class="btn danger" data-act="wipe">清空所有数据</button></div>'
+      + '</div>';
+  }
+
+  /* ============ 渲染 ============ */
+  function render(){
+    var routes = {overview:viewOverview, plan:viewPlan, scores:viewScores, lexis:viewLexis, writing:viewWriting, speaking:viewSpeaking, data:viewData};
+    var fn = routes[ui.route] || viewOverview;
+    $('view').innerHTML = fn();
+
+    var nav = NAV.map(function(n){
+      var b = navBadge(n.r);
+      return '<a href="#/' + n.r + '" class="' + (ui.route === n.r ? 'on' : '') + '">' + n.t + (b ? '<span class="nv">' + esc(b) + '</span>' : '') + '</a>';
+    }).join('');
+    $('nav').innerHTML = nav;
+
+    var left = diffDays(today(), S.profile.examDate);
+    $('railFoot').innerHTML = (S.profile.name ? '<div class="rf-row"><span>备考人</span><span>' + esc(S.profile.name) + '</span></div>' : '')
+      + '<div>距考试</div><b>' + Math.max(0, left) + '</b><span>天</span>'
+      + '<div class="rf-row"><span>目标</span><span class="num">' + S.profile.target.overall.toFixed(1) + '</span></div>'
+      + '<div class="rf-row"><span>本周</span><span class="num">W' + curWeek() + '</span></div>';
+
+    syncLogKind();
+    syncFocus();
+    syncCD();
+  }
+  function syncLogKind(){
+    var sel = $('lgSkill'); if(!sel) return;
+    var one = $('oneScoreWrap'), band = $('bandWrap');
+    if(!one || !band) return;
+    var isAll = sel.value === 'ALL';
+    one.style.display = isAll ? 'none' : '';
+    band.style.display = isAll ? '' : 'none';
+  }
+
+  /* ============ 计时器 ============ */
+  var FOCUS = {start:null};
+  var CD = {end:null, total:0, label:''};
+  function syncFocus(){
+    var el = $('focusClock'); if(!el) return;
+    if(!FOCUS.start){ el.textContent = '00:00'; el.classList.remove('run'); return; }
+    var sec = (Date.now() - FOCUS.start) / 1000;
+    el.textContent = mmss(sec); el.classList.add('run');
+    var m = $('focusMeta'); if(m) m.textContent = '专注中，结束时按分钟记账。';
+  }
+  function syncCD(){
+    var el = $('cdClock'); if(!el) return;
+    if(!CD.end){ el.textContent = '00:00'; el.classList.remove('run'); return; }
+    var left = (CD.end - Date.now()) / 1000;
+    el.textContent = mmss(left); el.classList.toggle('run', left > 0);
+    var m = $('cdMeta');
+    if(left <= 0){ el.textContent = '时间到'; if(m) m.textContent = CD.label || '时间到，停下来复盘。'; }
+    else if(m) m.textContent = CD.label || '计时中';
+  }
+  setInterval(function(){ syncFocus(); syncCD(); }, 500);
+
+  function startFocus(){
+    if(FOCUS.start) return toast('已经在计时了');
+    FOCUS.start = Date.now(); syncFocus(); toast('开始计时');
+  }
+  function endFocus(){
+    if(!FOCUS.start) return toast('还没有在计时');
+    var mins = Math.max(1, Math.round((Date.now() - FOCUS.start) / 60000));
+    S.sessions.push({id:uid(), date: today(), minutes: mins, kind:'focus'});
+    FOCUS.start = null; save(); toast('记下 ' + mins + ' 分钟专注'); render();
+  }
+  function startCD(sec, label){
+    CD.total = sec; CD.end = Date.now() + sec * 1000; CD.label = label || '';
+    syncCD(); toast('计时 ' + Math.round(sec/60) + ' 分钟');
+  }
+  function stopCD(){ CD.end = null; CD.total = 0; syncCD(); }
+
+  /* ============ 交互 ============ */
+  document.addEventListener('change', function(e){
+    var el = e.target;
+    if(el && el.id === 'lgSkill'){ syncLogKind(); }
+    if(el && el.id === 'importFile'){ handleFile(el.files && el.files[0]); }
+  });
+
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('[data-act]');
+    if(!btn) return;
+    var act = btn.getAttribute('data-act'), arg = btn.getAttribute('data-arg');
+    if(btn.tagName === 'INPUT') return; // 勾选交给 change
+    switch(act){
+      case 'week':
+        ui.openWeek = (ui.openWeek === +arg) ? -1 : +arg; render(); break;
+      case 'week-open-cur': ui.openWeek = curWeek(); render(); break;
+      case 'metric': ui.metric = arg; render(); break;
+      case 'lex': ui.lex = arg; render(); break;
+      case 'wpart': ui.wPart = arg; render(); break;
+      case 'spart': ui.sPart = arg; render(); break;
+      case 'focus-start': startFocus(); break;
+      case 'focus-end': endFocus(); break;
+      case 'cd': startCD(+arg, +arg === 1200 ? 'Task 1 · 20 分钟' : 'Task 2 · 40 分钟'); break;
+      case 'cd2': startCD(60, '准备 1 分钟'); setTimeout(function(){ startCD(120, '作答 2 分钟'); }, 61000); break;
+      case 'start-s': startCD(+arg, '说满 ' + arg + ' 秒'); break;
+      case 'start-w': startCD(+arg * 60, '写这篇'); break;
+      case 'cd-stop': stopCD(); break;
+      case 'del-log': delLog(arg); break;
+      case 'del-writing': delWriting(arg); break;
+      case 'del-speaking': delSpeaking(arg); break;
+      case 'word-ok': wordReview(arg, true); break;
+      case 'word-no': wordReview(arg, false); break;
+      case 'export': doExport(); break;
+      case 'copy': doCopy(); break;
+      case 'reset-plan':
+        if(confirm('把 10 周计划的起点改成今天？已完成的任务勾选会保留。')){ S.profile.startedAt = today(); save(); render(); toast('计划已从今天重新起算'); }
+        break;
+      case 'wipe':
+        if(confirm('确定清空全部记录？这一步不能撤销。')){
+          if(confirm('再确认一次：清空后只能靠之前导出的文件恢复。')){
+            S = fresh();
+            S.words = WORDS.map(function(w){ return {id:uid(), term:w[0], meaning:w[1], ex:w[2], lv:0, addedAt: today(), dueAt: today()}; });
+            save(); render(); toast('已清空');
+          }
+        }
+        break;
+      case 'import-merge': doImport('merge'); break;
+      case 'import-replace': doImport('replace'); break;
+      case 'import-cancel': pendingImport = null; var p = $('importPrev'); if(p){ p.classList.remove('show'); p.innerHTML=''; } break;
+    }
+  });
+
+  document.addEventListener('change', function(e){
+    var cb = e.target;
+    if(!cb || !cb.getAttribute || cb.getAttribute('data-act') !== 'toggle') return;
+    var id = cb.getAttribute('data-arg');
+    if(cb.checked) S.tasks[id] = {done:true, doneAt: today()};
+    else delete S.tasks[id];
+    save();
+    var row = cb.closest('.taskrow'); if(row) row.classList.toggle('done', cb.checked);
+    // 重新渲染以更新进度条与统计
+    var y = window.scrollY;
+    render(); window.scrollTo(0, y);
+  });
+
+  document.addEventListener('submit', function(e){
+    var f = e.target;
+    var kind = f.getAttribute('data-form');
+    if(!kind) return;
+    e.preventDefault();
+    var d = new FormData(f);
+    if(kind === 'log') addLog(d);
+    if(kind === 'word') addWord(d);
+    if(kind === 'writing') addWriting(d);
+    if(kind === 'speaking') addSpeaking(d);
+    if(kind === 'profile') saveProfile(d);
+  });
+
+  /* ============ 动作 ============ */
+  function num(v){ var n = parseFloat(v); return isNaN(n) ? null : n; }
+  function addLog(d){
+    var date = d.get('date') || today();
+    var skill = d.get('skill');
+    var material = (d.get('material') || '').trim();
+    var wrong = (d.get('wrong') || '').trim();
+    var rec = {id:uid(), date:date, skill:skill, material:material, note:wrong, kind: skill === 'ALL' ? 'mock' : 'practice'};
+    if(skill === 'ALL'){
+      var bands = {}; var any = false;
+      ['L','R','W','S'].forEach(function(k){ var v = num(d.get('band'+k)); if(v != null){ bands[k] = v; any = true; } });
+      if(!any){ toast('全套模考至少填一项小分'); return; }
+      rec.bands = bands; rec.score = overallOf(bands);
+      rec.wrong = wrong;
+    } else {
+      var sc = num(d.get('score'));
+      if(sc == null){ toast('先填分数'); return; }
+      rec.score = sc;
+      var specific = (d.get('wrong') || '').trim();
+      rec.wrong = specific;
+    }
+    S.logs.push(rec); save(); render(); toast('已记录 ' + (rec.score != null ? rec.score.toFixed(1) : ''));
+  }
+  function delLog(id){ S.logs = S.logs.filter(function(l){ return l.id !== id; }); save(); render(); toast('已删除'); }
+  function addWord(d){
+    var term = (d.get('term') || '').trim(), mean = (d.get('meaning') || '').trim();
+    if(!term || !mean){ toast('词和释义都要填'); return; }
+    S.words.unshift({id:uid(), term:term, meaning:mean, ex:(d.get('ex')||'').trim(), lv:0, addedAt: today(), dueAt: today()});
+    save(); render(); toast('已入库');
+  }
+  function wordReview(id, ok){
+    var w = S.words.filter(function(x){ return x.id === id; })[0]; if(!w) return;
+    if(ok){
+      w.lv = Math.min(4, (w.lv || 0) + 1);
+      var gap = [0, 2, 5, 9, 21][w.lv] || 21;
+      w.dueAt = addDays(today(), gap);
+      save(); render();
+      toast('熟了 · ' + gap + ' 天后复习');
+    } else {
+      w.lv = 0;
+      w.dueAt = addDays(today(), 1);
+      save(); render();
+      toast('退回新词，明天再来');
+    }
+  }
+  function addWriting(d){
+    var date = d.get('date') || today();
+    S.writing.push({id:uid(), date:date, type:d.get('type')||'T2', prompt:(d.get('prompt')||'').trim(),
+      minutes:num(d.get('minutes')), words:num(d.get('words')), band:num(d.get('band')), notes:(d.get('notes')||'').trim()});
+    save(); render(); toast('已存档');
+  }
+  function delWriting(id){ S.writing = S.writing.filter(function(l){ return l.id !== id; }); save(); render(); toast('已删除'); }
+  function addSpeaking(d){
+    var date = d.get('date') || today();
+    S.speaking.push({id:uid(), date:date, part:d.get('part')||'1', prompt:(d.get('prompt')||'').trim(),
+      minutes:num(d.get('minutes')), notes:(d.get('notes')||'').trim()});
+    save(); render(); toast('已记录');
+  }
+  function delSpeaking(id){ S.speaking = S.speaking.filter(function(l){ return l.id !== id; }); save(); render(); toast('已删除'); }
+  function saveProfile(d){
+    var p = S.profile;
+    p.name = (d.get('name')||'').trim();
+    p.examDate = d.get('examDate') || p.examDate;
+    p.weeklyHours = num(d.get('weeklyHours')) || p.weeklyHours;
+    var ov = num(d.get('overall')); if(ov != null) p.target.overall = ov;
+    ['L','R','W','S'].forEach(function(k){ var v = num(d.get(k)); if(v != null) p.target[k] = v; });
+    save(); render(); toast('设置已保存');
+  }
+
+  /* ============ 导入导出 ============ */
+  function payload(){
+    return {
+      app:'ielts-bench', version:3, exportedAt: new Date().toISOString(),
+      profile:S.profile, tasks:S.tasks, logs:S.logs, words:S.words,
+      writing:S.writing, speaking:S.speaking, sessions:S.sessions, meta:S.meta
+    };
+  }
+  function download(name, text){
+    var blob = new Blob([text], {type:'application/json;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 400);
+  }
+  function doExport(){
+    var t = today().replace(/-/g,'');
+    var name = '雅思工作台-进度-' + t + '.json';
+    download(name, JSON.stringify(payload(), null, 2));
+    S.meta.lastExport = new Date().toISOString(); save(); render();
+    toast('已导出 ' + name);
+  }
+  function doCopy(){
+    var text = JSON.stringify(payload(), null, 2);
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){ toast('JSON 已复制到剪贴板'); })
+        .catch(function(){ download('雅思工作台-进度-' + today().replace(/-/g,'') + '.json', text); toast('复制受限，已改为下载'); });
+    } else {
+      download('雅思工作台-进度-' + today().replace(/-/g,'') + '.json', text);
+      toast('复制受限，已改为下载');
+    }
+    S.meta.lastExport = new Date().toISOString(); save();
+  }
+  var pendingImport = null;
+  function handleFile(file){
+    if(!file) return;
+    var r = new FileReader();
+    r.onload = function(){
+      var text = String(r.result || '');
+      var obj = null;
+      try{ obj = JSON.parse(text); }catch(err){ toast('文件不是有效的 JSON'); return; }
+      if(!obj || typeof obj !== 'object' || !(obj.app === 'ielts-bench' || (obj.profile && obj.tasks && obj.logs))){
+        toast('这不是本工作台的进度文件'); return;
+      }
+      pendingImport = normalize(obj);
+      var imp = pendingImport;
+      var done = Object.keys(imp.tasks || {}).filter(function(k){ return imp.tasks[k] && imp.tasks[k].done; }).length;
+      var rows = [
+        ['导出时间', (imp.meta.lastExport || imp.exportedAt) ? String(imp.meta.lastExport || imp.exportedAt).slice(0,16).replace('T',' ') : '未记录'],
+        ['计划完成', done + ' 项'],
+        ['成绩记录', imp.logs.length + ' 条'],
+        ['词汇', imp.words.length + ' 个'],
+        ['写作 / 口语', imp.writing.length + ' 篇 / ' + imp.speaking.length + ' 次'],
+        ['专注记录', imp.sessions.length + ' 段'],
+        ['考试日期', imp.profile.examDate]
+      ].map(function(r){ return '<div class="row"><span>' + r[0] + '</span><b>' + esc(r[1]) + '</b></div>'; }).join('');
+      var box = $('importPrev');
+      box.innerHTML = rows
+        + '<div class="btnrow"><button class="btn solid" data-act="import-replace">覆盖当前进度</button>'
+        + '<button class="btn" data-act="import-merge">合并（保留现有，补齐缺失）</button>'
+        + '<button class="btn ghost" data-act="import-cancel">取消</button></div>'
+        + '<p class="hint">覆盖会丢弃这台设备上的现有记录；合并会按记录 id 去重，勾选取并集。</p>';
+      box.classList.add('show');
+    };
+    r.readAsText(file);
+  }
+  function doImport(mode){
+    if(!pendingImport) return;
+    var imp = pendingImport;
+    if(mode === 'replace'){
+      var keepCreated = S.createdAt;
+      S = imp; S.createdAt = keepCreated;
+      S.meta = Object.assign({}, S.meta, {lastImport:new Date().toISOString()});
+    } else {
+      S.tasks = Object.assign({}, S.tasks);
+      Object.keys(imp.tasks || {}).forEach(function(k){
+        if(imp.tasks[k] && imp.tasks[k].done){ S.tasks[k] = Object.assign({}, S.tasks[k], imp.tasks[k]); }
+      });
+      S.logs = union(S.logs, imp.logs);
+      S.writing = union(S.writing, imp.writing);
+      S.speaking = union(S.speaking, imp.speaking);
+      S.sessions = union(S.sessions, imp.sessions);
+      var byId = {}; S.words.forEach(function(w){ byId[w.id] = w; });
+      imp.words.forEach(function(w){
+        if(!byId[w.id]) S.words.push(w);
+        else if((w.lv || 0) > (byId[w.id].lv || 0)){ byId[w.id].lv = w.lv; byId[w.id].dueAt = w.dueAt; }
+      });
+      S.meta.lastImport = new Date().toISOString();
+    }
+    pendingImport = null;
+    save(); render();
+    toast(mode === 'replace' ? '已覆盖导入' : '已合并导入');
+    var p = $('importPrev'); if(p){ p.classList.remove('show'); p.innerHTML = ''; }
+  }
+  function union(a, b){
+    var ids = {}; a.forEach(function(x){ ids[x.id] = 1; });
+    b.forEach(function(x){ if(!ids[x.id]){ a.push(x); ids[x.id] = 1; } });
+    return a;
+  }
+
+  /* ============ 启动 ============ */
+  function routeFromHash(){
+    var h = (location.hash || '').replace(/^#\/?/, '').split('?')[0];
+    return NAV.some(function(n){ return n.r === h; }) ? h : 'overview';
+  }
+  window.addEventListener('hashchange', function(){
+    ui.route = routeFromHash();
+    window.scrollTo(0,0);
+    render();
+  });
+  ui.route = routeFromHash();
+  save();
+  render();
+  if(!storageOK){
+    setTimeout(function(){ toast('浏览器禁止本地存储，请到「数据」页导出备份'); }, 1200);
+  }
+})();</script>
+</body>
+</html>
